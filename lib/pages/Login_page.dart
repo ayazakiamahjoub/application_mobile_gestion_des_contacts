@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'register_page.dart';
+import 'package:go_router/go_router.dart';
 import '../database/database_helper.dart';
-import 'debug_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -24,10 +23,8 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _loading = true);
       
-      // ATTENDRE 1 seconde (simulation)
       await Future.delayed(const Duration(seconds: 1));
       
-      // VÉRIFIER si l'utilisateur existe dans la base de données
       final user = await _databaseHelper.loginUser(
         _emailController.text, 
         _passwordController.text
@@ -37,7 +34,6 @@ class _LoginPageState extends State<LoginPage> {
         setState(() => _loading = false);
         
         if (user != null) {
-          // UTILISATEUR TROUVÉ - Connexion réussie
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Connexion réussie ! Bienvenue ${user.firstName}"),
@@ -45,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
-          // UTILISATEUR NON TROUVÉ - Échec
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("❌ Email ou mot de passe incorrect"),
@@ -58,10 +53,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _register() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const RegisterPage()),
-    );
+    context.push('/register');
+  }
+
+  void _goToDebug() {
+    context.push('/debug');
   }
 
   @override
@@ -154,19 +150,13 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: const Text("S'inscrire", style: TextStyle(fontSize: 18)),
                     ),
-                    // Dans la Column, après OutlinedButton
                     TextButton(
-                      onPressed: () {
-                      Navigator.push(
-                          context,
-                       MaterialPageRoute(builder: (context) => const DebugPage()),
-    );
-  },
-  child: const Text(
-    "🔧 Debug DB",
-    style: TextStyle(color: Colors.grey, fontSize: 12),
-  ),
-),
+                      onPressed: _goToDebug,
+                      child: const Text(
+                        "🔧 Debug DB",
+                        style: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    ),
                   ],
                 ),
               ),

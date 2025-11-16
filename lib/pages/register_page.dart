@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../database/database_helper.dart';
 import '../models/user.dart';
 
@@ -25,7 +26,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
-      // Vérifier que les mots de passe correspondent
       if (_passwordController.text != _confirmPasswordController.text) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -39,7 +39,6 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() => _loading = true);
       
       try {
-        // Vérifier si l'email existe déjà
         bool emailExists = await _databaseHelper.emailExists(_emailController.text);
         if (emailExists) {
           if (mounted) {
@@ -54,7 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
           return;
         }
 
-        // Créer l'utilisateur
         final newUser = User(
           firstName: _firstNameController.text,
           lastName: _lastNameController.text,
@@ -63,7 +61,6 @@ class _RegisterPageState extends State<RegisterPage> {
           createdAt: DateTime.now(),
         );
 
-        // Insérer dans la base de données
         await _databaseHelper.insertUser(newUser);
         
         if (mounted) {
@@ -75,9 +72,8 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           );
           
-          // Retourner à la page de connexion
           Future.delayed(const Duration(seconds: 1), () {
-            Navigator.pop(context);
+            context.pop();
           });
         }
       } catch (e) {
@@ -95,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _navigateToLogin() {
-    Navigator.pop(context);
+    context.pop();
   }
 
   @override
@@ -137,7 +133,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Icône
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
@@ -153,7 +148,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 24),
                     
-                    // Titre
                     const Text(
                       "Créer un compte 🎉",
                       textAlign: TextAlign.center,
@@ -177,7 +171,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 32),
                     
-                    // Prénom et Nom (en ligne)
                     Row(
                       children: [
                         Expanded(
@@ -225,7 +218,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 20),
                     
-                    // Email
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -252,7 +244,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 20),
                     
-                    // Mot de passe
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
@@ -291,7 +282,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 20),
                     
-                    // Confirmation mot de passe
                     TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: _obscureConfirmPassword,
@@ -327,7 +317,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 30),
                     
-                    // Bouton d'inscription
                     ElevatedButton(
                       onPressed: _loading ? null : _register,
                       style: ElevatedButton.styleFrom(
@@ -358,7 +347,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     
                     const SizedBox(height: 20),
                     
-                    // Lien vers connexion
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

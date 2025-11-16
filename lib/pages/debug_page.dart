@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../database/database_helper.dart';
 import '../models/user.dart';
 
@@ -74,7 +75,6 @@ class _DebugPageState extends State<DebugPage> {
       ),
       body: Column(
         children: [
-          // Boutons d'action
           Container(
             padding: const EdgeInsets.all(16.0),
             color: Colors.grey[100],
@@ -95,7 +95,6 @@ class _DebugPageState extends State<DebugPage> {
             ),
           ),
           
-          // Statistiques
           Container(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -107,7 +106,6 @@ class _DebugPageState extends State<DebugPage> {
             ),
           ),
           
-          // Liste des utilisateurs
           Expanded(
             child: _users.isEmpty
                 ? const Center(
@@ -160,7 +158,7 @@ class _DebugPageState extends State<DebugPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pop(context),
+        onPressed: () => context.pop(),
         child: const Icon(Icons.arrow_back),
       ),
     );
