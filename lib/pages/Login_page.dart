@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../database/database_helper.dart';
+import '../main.dart'; // ← IMPORT POUR currentUserId
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -34,12 +35,17 @@ class _LoginPageState extends State<LoginPage> {
         setState(() => _loading = false);
         
         if (user != null) {
+          // STOCKE L'UTILISATEUR CONNECTÉ
+          currentUserId = user.id;
+          print('✅ Utilisateur connecté: ${user.firstName} (ID: $currentUserId)');
+          
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("Connexion réussie ! Bienvenue ${user.firstName}"),
               backgroundColor: Colors.green,
             ),
           );
+          context.go('/home');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

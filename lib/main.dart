@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'routes/app_router.dart';
 
+// VARIABLE GLOBALE POUR STOCKER L'UTILISATEUR CONNECTÉ
+int? currentUserId;
 void main() {
   runApp(MyApp());
 }
